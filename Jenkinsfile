@@ -46,34 +46,35 @@ pipeline {
             }
         }
 
-        // Stage 4: Check if containers are up and running
-        stage('4. Verify Running Containers') {
+        // Stage 4: Verify containers are up and show live URLs
+        stage('4. Verify Status & Show URLs') {
             steps {
-                echo 'Verifying running containers status...'
-                sh 'docker compose ps || docker-compose ps'
+                echo 'Verifying running containers and printing URLs...'
+                sh '''
+                    docker compose ps || docker-compose ps
+
+                    PUBLIC_IP=$(curl -s http://checkip.amazonaws.com || curl -s ifconfig.me || echo "localhost")
+                    echo "============================================================"
+                    echo " DEPLOYMENT SUCCESSFUL!"
+                    echo " Access your live application at:"
+                    echo " Frontend UI: http://${PUBLIC_IP}:3000"
+                    echo " Backend API: http://${PUBLIC_IP}:80/students"
+                    echo "============================================================"
+
+                    # Clean up dangling images
+                    docker image prune -f || true
+                '''
             }
         }
     }
 
-    // Post-execution notifications and cleanup
+    // Post-execution status messages
     post {
-        always {
-            echo "Pipeline run completed. Cleaning up dangling Docker images..."
-            sh 'docker image prune -f || true'
-        }
         success {
-            script {
-                def publicIp = sh(script: "curl -s http://checkip.amazonaws.com || curl -s ifconfig.me || echo 'localhost'", returnStdout: true).trim()
-                echo "============================================================"
-                echo " DEPLOYMENT SUCCESSFUL!"
-                echo " Access your live application at:"
-                echo " Frontend UI: http://${publicIp}:3000"
-                echo " Backend API: http://${publicIp}:80/students"
-                echo "============================================================"
-            }
+            echo "Pipeline run completed successfully! All services are active."
         }
         failure {
-            echo "Deployment failed! Check the console output or run 'docker compose logs' on EC2."
+            echo "Deployment failed! Check console output or run 'docker compose logs' on EC2."
         }
     }
 }
