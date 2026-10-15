@@ -13,8 +13,8 @@ RUN npm install --legacy-peer-deps
 # Copy frontend source files
 COPY . .
 
-# Build React production bundle
-ENV NODE_OPTIONS="--openssl-legacy-provider"
+# Build React production bundle with memory cap for t2.micro
+ENV NODE_OPTIONS="--openssl-legacy-provider --max-old-space-size=512"
 RUN npm run build
 
 # Stage 2: Production Server with Nginx
