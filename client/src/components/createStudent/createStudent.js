@@ -21,8 +21,9 @@ export default function AddStudent() {
     course: '',
     section: '',
   });
+  const API_URL = `http://${window.location.hostname}:80/students`;
   const createStudent = () => {
-    axios.post('http://localhost:80/students', student).then(() => {
+    axios.post(API_URL, student).then(() => {
       window.location.reload(false);
     });
   };

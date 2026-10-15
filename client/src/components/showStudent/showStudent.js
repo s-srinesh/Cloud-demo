@@ -21,14 +21,16 @@ export default function ShowStudent() {
   const classes = useStyles();
   const [studentList, showStudentList] = useState([]);
 
+  const API_URL = `http://${window.location.hostname}:80/students`;
+
   const deleteStudent = id => {
-    axios.delete(`http://localhost:80/students/${id}`).then(() => {
+    axios.delete(`${API_URL}/${id}`).then(() => {
       window.location.reload(false);
     });
   };
 
   useEffect(() => {
-    axios.get('http://localhost:80/students').then(allStudents => {
+    axios.get(API_URL).then(allStudents => {
       showStudentList(allStudents.data);
     });
   }, []);
