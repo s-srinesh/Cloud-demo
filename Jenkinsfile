@@ -38,10 +38,10 @@ pipeline {
                 echo 'Building and deploying MongoDB, Backend, and Frontend containers...'
                 sh '''
                     echo "Stopping old containers if any..."
-                    docker compose down --remove-orphans || docker-compose down --remove-orphans || true
+                    docker compose down --remove-orphans || true
 
                     echo "Building images and launching services in the background..."
-                    docker compose up -d --build || docker-compose up -d --build
+                    docker compose up -d --build
                 '''
             }
         }
@@ -49,21 +49,14 @@ pipeline {
         // Stage 4: Verify containers are up and show live URLs
         stage('4. Verify Status & Show URLs') {
             steps {
-                echo 'Verifying running containers and printing URLs...'
-                sh '''
-                    docker compose ps || docker-compose ps
-
-                    PUBLIC_IP=$(curl -s http://checkip.amazonaws.com || curl -s ifconfig.me || echo "localhost")
-                    echo "============================================================"
-                    echo " DEPLOYMENT SUCCESSFUL!"
-                    echo " Access your live application at:"
-                    echo " Frontend UI: http://${PUBLIC_IP}:3000"
-                    echo " Backend API: http://${PUBLIC_IP}:80/students"
-                    echo "============================================================"
-
-                    # Clean up dangling images
-                    docker image prune -f || true
-                '''
+                echo 'Verifying running containers...'
+                sh 'docker compose ps || true'
+                echo "============================================================"
+                echo " DEPLOYMENT SUCCESSFUL!"
+                echo " Access your live application at:"
+                echo " Frontend UI: http://3.25.238.109:3000"
+                echo " Backend API: http://3.25.238.109:80/students"
+                echo "============================================================"
             }
         }
     }
