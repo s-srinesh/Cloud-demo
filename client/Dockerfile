@@ -7,8 +7,8 @@ WORKDIR /app
 # Copy package files
 COPY package*.json ./
 
-# Install dependencies (legacy peer deps for React 17 + MUI)
-RUN npm install --legacy-peer-deps
+# Install dependencies cleanly using lockfile (much faster, skips audit/fund checks)
+RUN npm ci --legacy-peer-deps --no-audit --no-fund
 
 # Copy frontend source files
 COPY . .
