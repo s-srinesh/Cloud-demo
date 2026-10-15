@@ -1,4 +1,4 @@
-cconst StudentData = require("../models/studentModel");
+const StudentData = require("../models/studentModel");
 
 const getStudents = async (req, res) => {
   // res.send(`<h1>hey this is student page</h1>`);

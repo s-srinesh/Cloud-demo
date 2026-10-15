@@ -1,4 +1,4 @@
-ccrequire("dotenv").config();
+require("dotenv").config();
 const mongoose = require('mongoose');
 
 module.exports = function studentDB() {

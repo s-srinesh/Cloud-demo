@@ -1,0 +1,46 @@
+version: '3.8'
+
+services:
+  # MongoDB Database Service
+  mongodb:
+    image: mongo:6.0
+    container_name: student-mongodb
+    restart: unless-stopped
+    ports:
+      - "27017:27017"
+    volumes:
+      - mongo_data:/data/db
+
+  # Backend Express API Service
+  backend:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: student-backend
+    restart: unless-stopped
+    ports:
+      - "80:80"
+    environment:
+      - PORT=80
+      - NODE_ENV=production
+    depends_on:
+      - mongodb
+    # Note: On EC2 / Linux, network_mode: "host" allows backend to communicate 
+    # directly with mongodb on localhost:27017 without code modifications.
+    network_mode: "host"
+
+  # Frontend React App Service (served via Nginx)
+  client:
+    build:
+      context: ./client
+      dockerfile: Dockerfile
+    container_name: student-client
+    restart: unless-stopped
+    ports:
+      - "3000:3000"
+    depends_on:
+      - backend
+    network_mode: "host"
+
+volumes:
+  mongo_data:
