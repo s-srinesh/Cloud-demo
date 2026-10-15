@@ -13,11 +13,11 @@ RUN npm install --omit=dev
 # Copy application source code
 COPY . .
 
-# Expose backend port
-EXPOSE 80
+# Expose internal backend port (not exposed to outside)
+EXPOSE 5000
 
 # Environment configuration
-ENV PORT=80
+ENV PORT=5000
 ENV NODE_ENV=production
 
 # Start application

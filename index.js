@@ -3,7 +3,7 @@ const cors = require('cors');
 const studentDB = require('./database/studentDB');
 
 const app = express();
-const port = process.env.PORT || 80;
+const port = process.env.PORT || 5000;
 
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json({ limit: '20mb', extended: true }));

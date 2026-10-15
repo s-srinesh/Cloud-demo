@@ -54,8 +54,8 @@ pipeline {
                 echo "============================================================"
                 echo " DEPLOYMENT SUCCESSFUL!"
                 echo " Access your live application at:"
-                echo " Frontend UI: http://3.25.238.109:3000"
-                echo " Backend API: http://3.25.238.109:80/students"
+                echo " Live Application (Port 80): http://3.25.238.109"
+                echo " (Frontend on port 80 routes requests to internal backend privately)"
                 echo "============================================================"
             }
         }
