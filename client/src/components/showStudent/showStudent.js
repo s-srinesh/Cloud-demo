@@ -21,7 +21,7 @@ export default function ShowStudent() {
   const classes = useStyles();
   const [studentList, showStudentList] = useState([]);
 
-  const API_URL = `http://${window.location.hostname}:80/students`;
+  const API_URL = '/students';
 
   const deleteStudent = id => {
     axios.delete(`${API_URL}/${id}`).then(() => {
