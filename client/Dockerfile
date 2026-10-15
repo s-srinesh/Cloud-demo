@@ -7,8 +7,8 @@ WORKDIR /app
 # Copy package files
 COPY package*.json ./
 
-# Install dependencies cleanly using lockfile (much faster, skips audit/fund checks)
-RUN npm ci --legacy-peer-deps --no-audit --no-fund
+# Install dependencies cleanly using lockfile if present, or fallback to install
+RUN if [ -f package-lock.json ]; then npm ci --legacy-peer-deps --no-audit --no-fund; else npm install --legacy-peer-deps --no-audit --no-fund; fi
 
 # Copy frontend source files
 COPY . .
